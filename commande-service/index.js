@@ -4,6 +4,7 @@ const PORT = process.env.PORT_ONE || 4001;
 const mongoose = require("mongoose");
 const Commande = require("./Commande");
 const axios = require("axios");
+const isAuthenticated = require("./isAuthenticated");
 
 app.use(express.json());
 
@@ -42,14 +43,14 @@ async function httpRequest(ids) {
 }
 
 // 📦 Création d’une commande
-app.post("/commande/ajouter", async (req, res) => {
+app.post("/commande/ajouter", isAuthenticated,async (req, res) => {
   const { ids, email_utilisateur } = req.body;
 
   try {
     const total = await httpRequest(ids);
     const newCommande = new Commande({
       ids,
-      email_utilisateur,
+      email_utilisateur:req.user.email,
       prix_total: total
     });
 

@@ -4,6 +4,8 @@ const PORT = process.env.PORT_ONE || 4000;
 const mongoose = require("mongoose");
 const Produit = require("./Produit");
 
+
+
 app.use(express.json());
 
 mongoose.set('strictQuery', true);
@@ -22,7 +24,6 @@ mongoose.connect("mongodb://localhost/produit-service", {
 // Ajouter un produit
 app.post("/produit/ajouter", (req, res) => {
   const { nom, description, prix } = req.body;
-  const newProduit = new Produit({ nom, description, prix });
 
   newProduit.save()
     .then(produit => res.status(201).json(produit))
